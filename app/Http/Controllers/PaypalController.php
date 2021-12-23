@@ -132,6 +132,8 @@ class PaypalController extends Controller
         $product = session('product');
         $amount = session('amount');
         session()->forget(['stock', 'total', 'amount']);
+        $product = Product::find($product);
+        $user = Auth::user();
         
         //get details
         $response = $this->provider->getExpressCheckoutDetails($token);
@@ -141,7 +143,7 @@ class PaypalController extends Controller
         }
 
         $invoice_id = explode('Invoice-', $response['INVNUM'])[1];
-        $cart = $this->getCart($recurring, $price, $amount, $invoice_id);
+        $cart = $this->getCart($recurring, $product, $price, $amount, $invoice_id);
 
         // check if our payment is recurring
         // if($recurring) {
@@ -158,7 +160,6 @@ class PaypalController extends Controller
         // if payment is not recurring just perform transaction on PayPal
         // and get the payment status
         $payment_status = $this->provider->doExpressCheckoutPayment($cart, $token, $PayerID);
-        $status = $payment_status['PAYMENTINFO_0_PAYMENTSTATUS'];
         //}
 
         $invoice = Invoice::find($invoice_id);
@@ -167,14 +168,12 @@ class PaypalController extends Controller
         }
 
         // set invoice status
-        $invoice->payment_status = $status;
+        $invoice->payment_status = $payment_status['PAYMENTINFO_0_PAYMENTSTATUS'];
+        $invoice->save();
 
-        $product = Product::find($product);
         Notifications::create('PURCHASE', Auth::user(), [
             'item' => $product->item->name,
         ]);
-
-        $invoice->save();
 
         if($invoice->paid) {
             //reduce stock by one
@@ -185,7 +184,7 @@ class PaypalController extends Controller
             $data['data'] = 'Bought from cash store by ' . $user->name . ' for $' . $price . ' each ($' . $price * $amount . ' total)' ;
             $data['notes'] = 'Bought from cash store';
 
-            if($service->creditItem(null, $user, 'Cash Shop Purchase', $data, $item, $amount)) {
+            if($service->creditItem(null, $user, 'Cash Shop Purchase', $data, $product->item, $amount)) {
                 flash('Items granted successfully.')->success();
             }
             else {
