@@ -5,26 +5,23 @@
  */
 
 return [
-    'mode'    => env('PAYPAL_MODE', 'sandbox'), // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
+    'mode'    => env('PAYPAL_MODE', 'sandbox'),
     'sandbox' => [
-        'username'    => env('PAYPAL_SANDBOX_API_USERNAME', ''),
-        'password'    => env('PAYPAL_SANDBOX_API_PASSWORD', ''),
-        'secret'      => env('PAYPAL_SANDBOX_API_SECRET', ''),
-        'certificate' => env('PAYPAL_SANDBOX_API_CERTIFICATE', ''),
-        'app_id'      => 'APP-80W284485P519543T', // Used for testing Adaptive Payments API in sandbox mode
+        'client_id'     => env('PAYPAL_CLIENT_ID', ''),
+        'client_secret' => env('PAYPAL_CLIENT_SECRET', ''),
+        'app_id'        => env('PAYPAL_APP_ID', ''),
     ],
     'live' => [
-        'username'    => env('PAYPAL_LIVE_API_USERNAME', ''),
-        'password'    => env('PAYPAL_LIVE_API_PASSWORD', ''),
-        'secret'      => env('PAYPAL_LIVE_API_SECRET', ''),
-        'certificate' => env('PAYPAL_LIVE_API_CERTIFICATE', ''),
-        'app_id'      => '', // Used for Adaptive Payments API
+        'client_id'     => env('PAYPAL_CLIENT_ID', ''),
+        'client_secret' => env('PAYPAL_CLIENT_SECRET', ''),
+        'app_id'        => env('PAYPAL_APP_ID', ''),
     ],
 
-    'payment_action' => 'Sale', // Can only be 'Sale', 'Authorization' or 'Order'
-    'currency'       => env('PAYPAL_CURRENCY', 'USD'),
-    'billing_type'   => 'MerchantInitiatedBilling',
-    'notify_url'     => '', // Change this accordingly for your application.
-    'locale'         => '', // force gateway language  i.e. it_IT, es_ES, en_US ... (for express checkout only)
-    'validate_ssl'   => true, // Validate SSL when creating api client.
+    // Can only be 'Sale', 'Authorization' or 'Order'
+    'payment_action' => env('PAYPAL_PAYMENT_ACTION', 'Sale'),
+    'notify_url'     => env('APP_URL').'/admin/webhooks/paypal',
+    // force gateway language  i.e. it_IT, es_ES, en_US ... (for express checkout only)
+    'locale'         => env('PAYPAL_LOCALE', 'en_US'),
+    // Validate SSL when creating api client.
+    'validate_ssl'   => env('PAYPAL_VALIDATE_SSL', true),
 ];

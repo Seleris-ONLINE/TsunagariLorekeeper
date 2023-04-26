@@ -16,39 +16,57 @@ use App\Services\ProductService;
 
 class ProductController extends Controller
 {
-    // returns current products
+    /**
+     * Shows the product index page.
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function Index(Request $request) 
     {
-        return view('admin.paypal.index', [
+        return view('admin.cash_shop.index', [
             'products' => Product::orderBy('sort', 'DESC')->get()
         ]);
     }
 
-    // create page
+    /**
+     * Gets the create product page.
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function getCreateProduct() {
 
-        return view('admin.paypal.create_edit_product', [
-            'products' => new Product,
-            'items' => Item::orderBy('id')->pluck('name', 'id'),
+        return view('admin.cash_shop.create_edit_product', [
+            'product' => new Product,
         ]);
     }
 
-    // edit page
+    /**
+     * Gets the edit product page.
+     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function getEditProduct($id) {
         $product = Product::find($id);
         if(!$product) abort(404);
-        return view('admin.paypal.create_edit_product', [
-            'products' => $product,
-            'items' => Item::orderBy('id')->pluck('name', 'id'),
+        return view('admin.cash_shop.create_edit_product', [
+            'product' => $product,
         ]);
     }
 
-    // creates or edits
+    /**
+     * Creates or edits a product.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Services\ProductService  $service
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function postCreateEditProduct(Request $request, ProductService $service, $id = null)
     {
         $id ? $request->validate(Product::$updateRules) : $request->validate(Product::$createRules);
         $data = $request->only([
-            'price', 'quantity', 'is_limited', 'item_id', 'is_bundle', 'is_visible', 'max'
+            'price', 'is_visible', 'is_limited_stock', 'quantity', 'purchase_limit', 'product_type', 'product_id'
         ]);
         if($id && $service->updateProduct(Product::find($id), $data, Auth::user())) {
             flash('Product updated successfully.')->success();
@@ -67,7 +85,7 @@ class ProductController extends Controller
     public function getDeleteProduct($id)
     {
         $products = Product::find($id);
-        return view('admin.paypal._delete_product', [
+        return view('admin.cash_shop._delete_product', [
             'products' => $products,
         ]);
     }
@@ -88,7 +106,7 @@ class ProductController extends Controller
     public function getEditShop() {
 
         $shop = ProductInfo::where('id', 1)->first();
-        return view('admin.paypal.edit_desc', [
+        return view('admin.cash_shop.edit_desc', [
             'shop' => $shop,
         ]);
     }

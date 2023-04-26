@@ -22,15 +22,13 @@ class ProductService extends Service
 
         try {
 
-            if(Product::where('item_id', $data['item_id'])->exists()) throw new \Exception("This item is already in stock.");
+            if(Product::where('product_id', $data['product_id'])->where('product_type', $data['product_type'])->exists()) throw new \Exception("This product is already in stock.");
 
             if(!isset($data['is_visible'])) $data['is_visible'] = 0;
-            if(!isset($data['is_limited'])) $data['is_limited'] = 0;
-            if(!isset($data['is_bundle'])) $data['is_bundle'] = 0;
-
-            if($data['is_limited'] == 1) {
-                if($data['quantity'] > $data['max']) throw new \Exception("Max cannot be smaller than stock.");
-            }
+            if(!isset($data['is_limited_stock'])) $data['is_limited_stock'] = 0;
+            if(!isset($data['purchase_limit'])) $data['purchase_limit'] = 0;
+            if(!isset($data['quantity'])) $data['quantity'] = 0;
+            if($data['quantity']) $data['current_quantity'] = $data['quantity'];
 
             $product = Product::create($data);
 
@@ -54,15 +52,14 @@ class ProductService extends Service
         DB::beginTransaction();
 
         try {
-            if(!isset($data['is_visible'])) $data['is_visible'] = 0;
-            if(!isset($data['is_limited'])) $data['is_limited'] = 0;
-            if(!isset($data['is_bundle'])) $data['is_bundle'] = 0;
-            if($data['is_limited'] == 1) {
-                if($data['quantity'] > $data['max']) throw new \Exception("Max cannot be smaller than stock.");
-            }
 
+            if(!isset($data['is_visible'])) $data['is_visible'] = 0;
+            if(!isset($data['is_limited_stock'])) $data['is_limited_stock'] = 0;
+            if(!isset($data['purchase_limit'])) $data['purchase_limit'] = null;
+            if(!isset($data['quantity'])) $data['quantity'] = null;
+            if($data['quantity']) $data['current_quantity'] = $data['quantity'];
             // More specific validation
-            if(Product::where('item_id', $data['item_id'])->where('id', '!=', $product->id)->exists()) throw new \Exception("This item is already in stock.");
+            if(Product::where('product_id', $data['product_id'])->where('product_type', $data['product_type'])->where('id', '!=', $product->id)->exists()) throw new \Exception("This item is already in stock.");
 
             $product->update($data);
 
@@ -74,7 +71,7 @@ class ProductService extends Service
     }
     
     /**
-     * Deletes an product.
+     * Deletes a product.
      *
      * @param  \App\Models\Product
      * @return bool
@@ -86,7 +83,7 @@ class ProductService extends Service
         try {
             // make sure no one is in progress buying sort of deal
 
-            if($product->is_visible == 1) throw new \Exception("This product is currently buyable. Please hide it first.");
+            if($product->is_visible) throw new \Exception("This product is currently purchaseable. Please hide it first.");
         
             $product->delete();
 
@@ -97,24 +94,9 @@ class ProductService extends Service
         return $this->rollbackReturn(false);
     }
 
-    public function editShop($product, $data) {
-
-        DB::beginTransaction();
-
-        try {
-            $product->title = $data['title'];
-            $product->btitle = $data['btitle'];
-            $product->desc = $data['desc'];
-            $product->bdesc = $data['bdesc'];
-            $product->save();
-            
-            return $this->commitReturn(true);
-        } catch(\Exception $e) { 
-            $this->setError('error', $e->getMessage());
-        }
-        return $this->rollbackReturn(false);
-    }
-
+    /**
+     * Sorts products
+     */
     public function sortProduct($data)
     {
         DB::beginTransaction();

@@ -10,10 +10,7 @@
 <p>Items that can be bought in the cash-store.</p>
 
 <div class="text-right">
-    <a href="products/shop" class="btn btn-primary text-right mb-3">Edit Cash Shop Text</a>
-</div>
-<div class="text-right">
-<a href="products/create" class="btn btn-primary text-right mb-3">Make New Product</a>
+    <a href="{{ url('admin/data/products/create') }}" class="btn btn-primary text-right mb-3">Make New Product</a>
 </div>
 
 @if(!count($products))
@@ -35,12 +32,12 @@
                 <tr class="sort-item" data-id="{{ $product->id }}">
                     <td>
                         <a class="fas fa-arrows-alt-v handle mr-3" href="#"></a>
-                        {{ $product->item->name }}
+                        <a href="{{ $product->product->url }}">{{ $product->product->name }} ({{ $product->product_type}})</a>
                     </td>
                     <td>${{ $product->price }}</td>
                     <td>@if($product->is_limited) @if($product->quantity == 0) Out of Stock @else {{ $product->quantity }} @endif @else Unlimited @endif</td>
                     <td>@if($product->is_bundle) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
-                    <td>@if($product->is_visible) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
+                    <td>@if(true) <div class="text-success"> Yes @else <div class="text-danger"> No @endif</div></td>
                     <td class="text-right">
                         <a href="{{ url('admin/data/products/edit/'.$product->id) }}" class="btn btn-primary">Edit</a>
                     </td>

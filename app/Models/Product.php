@@ -13,7 +13,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'price', 'item_id', 'quantity', 'is_limited', 'is_bundle', 'is_visible', 'max', 'sort'
+        'price', 'product_type', 'product_id', 'quantity', 'is_limited_stock', 'is_visible', 'purchase_limit', 'sort'
     ];
 
     /**
@@ -21,7 +21,7 @@ class Product extends Model
      *
      * @var string
      */
-    protected $table = 'shop_products';
+    protected $table = 'products';
 
         /**
      * Validation rules for creation.
@@ -30,7 +30,6 @@ class Product extends Model
      */
     public static $createRules = [
         'price' => 'required',
-        'item_id' => 'required',
     ];
     
     /**
@@ -40,7 +39,6 @@ class Product extends Model
      */
     public static $updateRules = [
         'price' => 'required',
-        'item_id' => 'required',
     ];
     
 
@@ -50,12 +48,27 @@ class Product extends Model
 
     **********************************************************************************************/
     
-     /**
-     * Get the item associated with this item stack.
+    /**
+     * Get the product attached to the prompt product.
      */
-    public function item() 
+    public function product() 
     {
-        return $this->belongsTo('App\Models\Item\Item', 'item_id');
+        switch ($this->product_type)
+        {
+            case 'Item':
+                return $this->belongsTo('App\Models\Item\Item', 'product_id');
+                break;
+            case 'Currency':
+                return $this->belongsTo('App\Models\Currency\Currency', 'product_id');
+                break;
+            case 'LootTable':
+                return $this->belongsTo('App\Models\Loot\LootTable', 'product_id');
+                break;
+            case 'Raffle':
+                return $this->belongsTo('App\Models\Raffle\Raffle', 'product_id');
+                break;
+        }
+        return null;
     }
 
 }
