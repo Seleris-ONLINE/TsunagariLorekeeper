@@ -21,18 +21,17 @@
     ])
 
     <div class="row justify-content-end mr-2">
-        {!! Form::open(['url' => 'shops/products/paypal/cancel/'.$invoice->id, 'method' => 'POST']) !!}
+        {!! Form::open(['url' => 'shops/products/paypal/cancel/' . $invoice->id, 'method' => 'POST']) !!}
         <div class="form-group mt-3">
-                {!! Form::submit('Cancel Purchase', ['class' => 'btn btn-danger']) !!}
-            </div>
+            {!! Form::submit('Cancel Purchase', ['class' => 'btn btn-danger']) !!}
+        </div>
         {!! Form::close() !!}
 
         {{-- justify to end --}}
-        {!! Form::open(['url' => 'shops/products/paypal/confirm/'.$invoice->id, 'method' => 'POST']) !!}
-            <div class="form-group mt-3 ml-2">
-                {!! Form::submit('Complete Purchase', ['class' => 'btn btn-success']) !!}
-            </div>
+        {!! Form::open(['url' => 'shops/products/paypal/confirm/' . $invoice->id, 'method' => 'POST']) !!}
+        <div class="form-group mt-3 ml-2">
+            {!! Form::submit('Complete Purchase', ['class' => 'btn btn-success']) !!}
+        </div>
         {!! Form::close() !!}
     </div>
-
 @endsection

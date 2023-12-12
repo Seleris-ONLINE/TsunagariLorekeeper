@@ -35,14 +35,14 @@
                 @foreach ($invoices as $invoice)
                     <tr>
                         <td>
-                           Invoice #{{ $invoice->id }}
+                            Invoice #{{ $invoice->id }}
                         </td>
                         <td>
                             {!! $invoice->user->displayName !!}
                         </td>
                         <td>
                             <i class="{!! $invoice->paymentMethodIcon !!}"></i>
-                            {{ $invoice->currency . ' ' . $invoice->total }} 
+                            {{ $invoice->currency . ' ' . $invoice->total }}
                         </td>
                         <td>
                             {!! $invoice->displayProducts !!}

@@ -88,7 +88,7 @@
             </div>
             <div class="text-right mt-2">
                 {!! Form::open(['url' => 'shops/products/purchase']) !!}
-                    {!! Form::button('<i class="fab fa-paypal"></i> Checkout Cart', ['class' => 'btn btn-primary btn-block cart-checkout']) !!}
+                {!! Form::button('<i class="fab fa-paypal"></i> Checkout Cart', ['class' => 'btn btn-primary btn-block cart-checkout']) !!}
                 {!! Form::close() !!}
             </div>
         </div>
