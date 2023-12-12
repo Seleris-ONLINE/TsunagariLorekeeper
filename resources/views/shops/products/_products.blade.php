@@ -39,7 +39,7 @@
         @if ($product->isOutOfStock)
             <div class="text-danger"> Out of Stock </div>
         @else
-            {!! Form::number('quantity', 1, ['class' => 'form-control mb-2 text-center w-50 mx-auto', 'min' => 1, 'max' => 5]) !!}
+            {!! Form::number('quantity', 1, ['class' => 'form-control mb-2 text-center w-50 mx-auto', 'min' => 1]) !!}
             {!! Form::button('<i class="fas fa-shopping-cart"></i> Add to Cart', ['class' => 'btn btn-warning text-white btn-block cart', 'style' => 'background-color: #ed9c3c !important;']) !!}
             {!! Form::button('<i class="fab fa-paypal"></i> Buy Now', ['class' => 'btn btn-primary btn-block', 'type' => 'submit']) !!}
         @endif

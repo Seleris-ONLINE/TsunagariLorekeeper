@@ -50,6 +50,9 @@
         <h1 class="mt-3">
             My Product Purchase History
         </h1>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle fa-fw"></i> This is a list of all the products you have purchased. Only completed purchases are shown.
+        </div>
 
         {!! $invoices->render() !!}
 

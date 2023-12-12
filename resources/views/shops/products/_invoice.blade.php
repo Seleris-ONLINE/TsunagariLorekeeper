@@ -46,7 +46,7 @@
                 {!! format_date($invoice->created_at) !!}
             </div>
         </div>
-        @if(!isset($confirm))
+        @if(!isset($confirm) && (Auth::check() && Auth::user()->id == $invoice->user_id))
             @if ($url != 'COMPLETED')
             {{-- check if url contains 'checkoutnow' --}}
                 @if (strpos($url, 'checkoutnow') != false)

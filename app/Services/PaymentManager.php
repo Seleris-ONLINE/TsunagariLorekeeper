@@ -114,6 +114,9 @@ class PaymentManager extends Service
                 if (!$product) {
                     throw new \Exception("This product does not exist.");
                 }
+                if (!$product->is_visible) {
+                    throw new \Exception("This product is not available.");
+                }
                 if ($product->is_limited_stock) {
                     if ($data['quantity'][$key] > $product->remaining_stock) {
                         throw new \Exception("You cannot buy more than the available quantity.");

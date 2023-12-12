@@ -11,7 +11,9 @@
         Product Invoices
     </h1>
 
-    <p>Items that can be bought in the product store.</p>
+    <p>
+        Invoices from products purchased on the shop.
+    </p>
 
     <div class="text-right">
         <a href="{{ url('admin/data/products') }}" class="btn btn-primary text-right mb-3"><i class="fas fa-arrow-left fa-fw"></i> Back to Products</a>
@@ -25,6 +27,7 @@
                 <tr>
                     <th>Invoice</th>
                     <th>User</th>
+                    <th>Status</th>
                     <th>Total</th>
                     <th>Products</th>
                     <th>Discount</th>
@@ -39,6 +42,9 @@
                         </td>
                         <td>
                             {!! $invoice->user->displayName !!}
+                        </td>
+                        <td>
+                            {{ $invoice->status }}
                         </td>
                         <td>
                             <i class="{!! $invoice->paymentMethodIcon !!}"></i>

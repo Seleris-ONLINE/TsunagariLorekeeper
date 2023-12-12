@@ -324,7 +324,7 @@ class ItemService extends Service {
             if (DB::table('shop_stock')->where('item_id', $item->id)->exists()) {
                 throw new \Exception('A shop currently stocks this item. Please remove the item before deleting it.');
             }
-            if (DB::table('shop_products')->where('product_type', 'Item')->where('product_id', $item->id)->exists()) {
+            if (DB::table('products')->where('product_type', 'Item')->where('product_id', $item->id)->exists()) {
                 throw new \Exception('Product shop currently stocks this item. Please remove the item before deleting it.');
             }
 

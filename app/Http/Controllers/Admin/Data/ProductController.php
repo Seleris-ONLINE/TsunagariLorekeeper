@@ -42,18 +42,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Shows the invoice page.
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public function getInvoice($id)
-    {
-        return view('admin.products.invoice', [
-            'invoice' => Invoice::findOrfail($id)
-        ]);
-    }
-
-    /**
      * Gets the create product page.
      *
      * @return \Illuminate\Http\Response
