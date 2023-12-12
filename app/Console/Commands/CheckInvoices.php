@@ -53,6 +53,6 @@ class CheckInvoices extends Command {
                 $count++;
             }
         }
-        $this->info('Cancelled ' . $count . ' invoices.');
+        $this->info('Cancelled '.$count.' invoices.');
     }
 }
