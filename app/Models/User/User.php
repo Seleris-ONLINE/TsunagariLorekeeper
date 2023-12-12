@@ -8,6 +8,7 @@ use App\Models\Character\CharacterImageCreator;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\Gallery\GalleryCollaborator;
+use App\Models\Product\Invoice;
 use App\Models\Item\ItemLog;
 use App\Models\Rank\RankPower;
 use App\Models\Shop\ShopLog;
@@ -553,6 +554,15 @@ class User extends Authenticatable implements MustVerifyEmail {
         })->orderBy('id', 'DESC');
 
         return $query->paginate(30);
+    }
+
+    /**
+     * Get the user's invoices.
+     * 
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getInvoices() {
+        return Invoice::where('user_id', $this->id)->whereIn('status', ['COMPLETED', 'APPROVED'])->orderBy('id', 'DESC')->paginate(30);
     }
 
     /**

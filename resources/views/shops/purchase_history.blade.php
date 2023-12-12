@@ -45,4 +45,82 @@
         </div>
     </div>
     {!! $logs->render() !!}
+
+    @if (count($invoices))
+        <h1 class="mt-3">
+            My Product Purchase History
+        </h1>
+
+        {!! $invoices->render() !!}
+
+        <div class="mb-4 logs-table">
+            <div class="logs-table-header">
+                <div class="row">
+                    <div class="col-12 col-md-2">
+                        <div class="logs-table-cell">Status</div>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <div class="logs-table-cell">Payment Method</div>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <div class="logs-table-cell">Total</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="logs-table-cell">Products</div>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <div class="logs-table-cell">Date</div>
+                    </div>
+                    <div class="col-6 col-md-1">
+                        <div class="logs-table-cell">View</div>
+                    </div>
+                </div>
+            </div>
+            <div class="logs-table-body">
+                @foreach ($invoices as $invoice)
+                    <div class="logs-table-row">
+                        <div class="row flex-wrap">
+                            <div class="col-12 col-md-2">
+                                <div class="logs-table-cell">{{ ucfirst($invoice->status) }}</div>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <div class="logs-table-cell">
+                                    <i class="{!! $invoice->paymentMethodIcon !!}"></i>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <div class="logs-table-cell">{{ $invoice->currency . ' ' . $invoice->total }}</div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="logs-table-cell">{!! $invoice->displayProducts !!}</div>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <div class="logs-table-cell">{!! pretty_date($invoice->created_at) !!}</div>
+                            </div>
+                            <div class="col-6 col-md-1">
+                                <div class="logs-table-cell">
+                                    <a href="#" class="btn btn-primary invoice" data-id="{{ $invoice->id }}">
+                                        <i class="fas fa-file-invoice fa-fw"></i> View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        {!! $invoices->render() !!}
+    @endif
+
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.invoice').on('click', function(e) {
+                e.preventDefault();
+                loadModal("{{ url('shops/invoice') }}/" + $(this).data('id'), 'Viewing Invoice');
+            });
+        });
+    </script>
 @endsection

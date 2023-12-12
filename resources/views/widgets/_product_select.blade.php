@@ -17,11 +17,11 @@
         </tr>
     </thead>
     <tbody id="lootTableBody">
-        @if($loots)
+        @if ($loots)
             <tr class="loot-row">
                 <td>{!! Form::select('product_type', ['Item' => 'Item', 'Currency' => 'Currency'], $loots->product_type, ['class' => 'form-control product-type', 'placeholder' => 'Select Product Type']) !!}</td>
                 <td class="loot-row-select">
-                    @if($loots->product_type == 'Item')
+                    @if ($loots->product_type == 'Item')
                         {!! Form::select('product_id', $items, $loots->product_id, ['class' => 'form-control item-select selectize', 'placeholder' => 'Select Item']) !!}
                     @elseif($loots->product_type == 'Currency')
                         {!! Form::select('product_id', $currencies, $loots->product_id, ['class' => 'form-control currency-select selectize', 'placeholder' => 'Select Currency']) !!}

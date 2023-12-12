@@ -17,5 +17,6 @@
         @foreach ($shops as $shop)
             <div class="sidebar-item"><a href="{{ $shop->url }}" class="{{ set_active('shops/' . $shop->id) }}">{{ $shop->name }}</a></div>
         @endforeach
+        <div class="sidebar-item"><a href="{{ url('shops/products') }}" class="{{ set_active('shops/products') }}">Products</a></div>
     </li>
 </ul>

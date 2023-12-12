@@ -192,6 +192,19 @@ Route::group(['prefix' => 'designs', 'namespace' => 'Characters'], function () {
 Route::group(['prefix' => 'shops'], function () {
     Route::post('buy', 'ShopController@postBuy');
     Route::get('history', 'ShopController@getPurchaseHistory');
+
+    // PRODUCT SPECIFIC
+    Route::get('invoice/{id}', 'PaymentController@getInvoice'); // modal
+    Route::get('products', 'PaymentController@getStoreFront');
+    Route::get('products/cart/{ids?}', 'PaymentController@getCart'); // modal
+    Route::post('products/purchase/{ids?}', 'PaymentController@postCheckout');
+
+    // PAYPAL SPECIFIC
+    Route::get('products/paypal/confirm', 'PaymentController@getPaypalConfirm');
+    Route::post('products/paypal/confirm/{id}', 'PaymentController@postPaypalConfirm');
+    Route::get('products/paypal/success', 'PaymentController@getPaypalSuccess');
+    Route::get('products/paypal/cancel', 'PaymentController@getPaypalCancel');
+    Route::post('products/paypal/cancel/{id}', 'PaymentController@postPaypalCancel');
 });
 
 /**************************************************************************************************
@@ -206,11 +219,3 @@ Route::group(['prefix' => 'comments', 'namespace' => 'Comments'], function () {
     Route::post('/{id}/like/{action}', 'CommentController@like')->name('comments.like');
     Route::get('/liked', 'CommentController@getLikedComments');
 });
-
-/**************************************************************************************************
-    Paypal
-**************************************************************************************************/
-Route::get('paypal-success', 'StoreController@success');
-Route::get('cash-shop', 'StoreController@storeFront');
-Route::post('cash-shop/purchase/{id}', 'PaypalController@expressCheckout');
-Route::get('paypal/express-checkout-success', 'PaypalController@expressCheckoutSuccess');
