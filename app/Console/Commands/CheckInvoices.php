@@ -35,7 +35,8 @@ class CheckInvoices extends Command {
      */
     public function handle() {
         //
-        $invoices = Invoice::whereNotIn(['COMPLETED', 'CANCELLED'])->get();
+        $invoices = Invoice::whereNotIn('status', ['COMPLETED', 'CANCELLED'])->get();
+        $count = 0;
         foreach ($invoices as $invoice) {
             // check if its been 3 hours since the invoice was created
             if ($invoice->status == 'PAYER_ACTION_REQUIRED' && Carbon::now()->diffInHours($invoice->created_at) >= 3) {
@@ -43,12 +44,15 @@ class CheckInvoices extends Command {
                 $invoice->update([
                     'status' => 'CANCELLED',
                 ]);
+                $count++;
             } elseif (Carbon::now()->diffInHours($invoice->created_at) >= 24) {
                 // cancel the invoice
                 $invoice->update([
                     'status' => 'CANCELLED',
                 ]);
+                $count++;
             }
         }
+        $this->info('Cancelled ' . $count . ' invoices.');
     }
 }
