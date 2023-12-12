@@ -5,7 +5,6 @@
         <h3>
             {!! $product->product->displayname !!}
             @if (Auth::check() && Auth::user()->isStaff)
-                {{-- make smaller --}}
                 <small>
                     <a href="{{ url('admin/data/products/edit/' . $product->id) }}" class="float-right">
                         <i class="fas fa-pencil-alt fa-fw text-muted fa-sm"></i>
@@ -20,7 +19,6 @@
         @endif
         <span>
             @if ($product->discount)
-                {{-- danger pill --}}
                 <span class="badge badge-danger">Discounted</span><br />
             @endif
             <b>Cost:</b>
