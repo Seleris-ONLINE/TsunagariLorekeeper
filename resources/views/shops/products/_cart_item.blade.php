@@ -2,7 +2,7 @@
     <div class="col"></div>
     <div class="col-6">
         @if ($product->product->imageUrl)
-            <img src="{{$product->product->imageUrl}}" class="img-fluid mr-2 rounded" style="max-height: 25px;">
+            <img src="{{ $product->product->imageUrl }}" class="img-fluid mr-2 rounded" style="max-height: 25px;">
         @endif
         {!! $product->product->displayname !!}
     </div>

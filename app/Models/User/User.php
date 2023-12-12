@@ -8,8 +8,8 @@ use App\Models\Character\CharacterImageCreator;
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\Gallery\GalleryCollaborator;
-use App\Models\Product\Invoice;
 use App\Models\Item\ItemLog;
+use App\Models\Product\Invoice;
 use App\Models\Rank\RankPower;
 use App\Models\Shop\ShopLog;
 use App\Models\Submission\Submission;
@@ -572,7 +572,7 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     /**
      * Get the user's invoices.
-     * 
+     *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getInvoices() {

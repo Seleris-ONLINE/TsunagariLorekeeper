@@ -4,8 +4,7 @@ namespace App\Models\Product;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Invoice extends Model
-{
+class Invoice extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -56,7 +55,6 @@ class Invoice extends Model
 
     /**
      * Get the fontawesome icon related to the payment method.
-     * 
      */
     public function getPaymentMethodIconAttribute() {
         switch ($this->payment_method) {
@@ -73,29 +71,31 @@ class Invoice extends Model
 
     /**
      * Displays all the products in the invoice.
-     * 
+     *
      * @return string
      */
     public function getDisplayProductsAttribute() {
         $products = [];
         foreach ($this->data['products'] as $product) {
             $product_obj = Product::find($product['product_id']);
-            $products[] =  $product_obj->product->displayName . ' x' . $product['quantity'];
+            $products[] = $product_obj->product->displayName.' x'.$product['quantity'];
         }
+
         return implode(', ', $products);
     }
 
     /**
      * Displays all the discounted products in the invoice if any exist.
-     * 
+     *
      * @return string
      */
     public function getDisplayDiscountedProductsAttribute() {
         $products = [];
         foreach ($this->data['discount']['products'] as $product) {
             $product_obj = Product::find($product['product_id']);
-            $products[] =  $product_obj->product->displayName . ' x' . $product['quantity'];
+            $products[] = $product_obj->product->displayName.' x'.$product['quantity'];
         }
+
         return implode(', ', $products);
     }
 }

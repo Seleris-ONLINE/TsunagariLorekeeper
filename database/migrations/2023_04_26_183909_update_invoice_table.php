@@ -4,15 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateInvoiceTable extends Migration
-{
+class UpdateInvoiceTable extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
         Schema::create('product_invoices', function (Blueprint $table) {
             $table->id();
@@ -45,11 +41,8 @@ class UpdateInvoiceTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         // this is a destructive migration and cannot be reversed
     }
 }

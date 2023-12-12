@@ -4,15 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateProductTable extends Migration
-{
+class UpdateProductTable extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         // we need to save all of the product data in order to drop the old table
         Schema::create('new_products', function (Blueprint $table) {
             $table->id();
@@ -31,25 +27,23 @@ class UpdateProductTable extends Migration
             $table->decimal('discount', 13, 2)->nullable()->default(null);
         });
 
-
         if (Schema::hasTable('shop_products')) {
             // get all of the products
             $products = DB::table('shop_products')->get();
 
             // loop through each product and save it to the new table
-            foreach ($products as $product)
-            {
+            foreach ($products as $product) {
                 DB::table('new_products')->insert([
-                    'price' => $product->price,
+                    'price'            => $product->price,
                     'is_limited_stock' => $product->is_limited,
-                    'total_stock' => $product->total_stock,
-                    'remaining_stock' => $product->remaining_stock,
-                    'purchase_limit' => $product->max,
-                    'is_visible' => $product->is_visible,
-                    'product_id' => $product->item_id,
-                    'product_type' => 'Item',
-                    'sort' => $product->sort,
-                    'discount' => $product->discount,
+                    'total_stock'      => $product->total_stock,
+                    'remaining_stock'  => $product->remaining_stock,
+                    'purchase_limit'   => $product->max,
+                    'is_visible'       => $product->is_visible,
+                    'product_id'       => $product->item_id,
+                    'product_type'     => 'Item',
+                    'sort'             => $product->sort,
+                    'discount'         => $product->discount,
                 ]);
             }
         }
@@ -70,11 +64,8 @@ class UpdateProductTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         // this migration cannot be reversed
         //

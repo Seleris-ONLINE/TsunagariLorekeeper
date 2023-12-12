@@ -1,18 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddProductDescription extends Migration
-{
+class AddProductDescription extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
         schema::create('product_info', function (Blueprint $table) {
             $table->increments('id');
@@ -25,22 +21,19 @@ class AddProductDescription extends Migration
         DB::table('product_info')->insert(
             [
                 [
-                    'desc' => 'Lorem Ipsum',
-                    'title' => 'Item Stock',
-                    'bdesc' => 'Lorem Ipsum',
+                    'desc'   => 'Lorem Ipsum',
+                    'title'  => 'Item Stock',
+                    'bdesc'  => 'Lorem Ipsum',
                     'btitle' => 'Item Stock',
-                ]
+                ],
             ]
         );
-    
     }
+
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::dropIfExists('product_info');
     }

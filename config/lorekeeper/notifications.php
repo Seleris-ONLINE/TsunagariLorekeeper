@@ -334,9 +334,9 @@ return [
     ],
     // CHARACTER_ITEM_REMOVAL
     222 => [
-        'name' => 'Product Shop Purchase',
+        'name'    => 'Product Shop Purchase',
         'message' => 'Thank you for your purchase! Your {item} has been added to your inventory (<a href="{url}">View Inventory</a>)',
-        'url' => 'inventory'
+        'url'     => 'inventory',
     ],
     // Comment made on user's model
     // COMMENT_MADE

@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
 use App\Models\Product\Invoice;
-use App\Services\PaymentManager;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class CheckInvoices extends Command {
@@ -44,8 +43,7 @@ class CheckInvoices extends Command {
                 $invoice->update([
                     'status' => 'CANCELLED',
                 ]);
-            }
-            else if (Carbon::now()->diffInHours($invoice->created_at) >= 24) {
+            } elseif (Carbon::now()->diffInHours($invoice->created_at) >= 24) {
                 // cancel the invoice
                 $invoice->update([
                     'status' => 'CANCELLED',

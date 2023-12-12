@@ -5,11 +5,11 @@
         <h3>
             {!! $product->product->displayname !!}
             @if (Auth::check() && Auth::user()->isStaff)
-            {{-- make smaller --}}
+                {{-- make smaller --}}
                 <small>
                     <a href="{{ url('admin/data/products/edit/' . $product->id) }}" class="float-right">
                         <i class="fas fa-pencil-alt fa-fw text-muted fa-sm"></i>
-                    </a>            
+                    </a>
                 </small>
             @endif
         </h3>
@@ -26,10 +26,10 @@
             <b>Cost:</b>
             {!! $product->discount ? '<span class="text-danger"><del>' . $product->price . '</del></span> ' : null !!}
             {{ $product->discount ? $product->price - $product->discount : $product->price }}
-            {{ Config::get('paypal.currency')}}
+            {{ Config::get('paypal.currency') }}
         </span>
         @if ($product->is_limited_stock)
-            <div style="color: {{$product->stockColour}} !important;"> Stock: {{ $product->remaining_stock }} / {{ $product->total_stock }}</div>
+            <div style="color: {{ $product->stockColour }} !important;"> Stock: {{ $product->remaining_stock }} / {{ $product->total_stock }}</div>
             @if ($product->purchase_limit)
                 <div class="text-danger"> Purchase Limit: {{ $product->purchase_limit }} per User</div>
             @endif

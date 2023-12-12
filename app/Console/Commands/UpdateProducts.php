@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Comment;
 use Illuminate\Console\Command;
 
 class UpdateProducts extends Command {
@@ -33,6 +32,5 @@ class UpdateProducts extends Command {
      * @return int
      */
     public function handle() {
-
     }
 }

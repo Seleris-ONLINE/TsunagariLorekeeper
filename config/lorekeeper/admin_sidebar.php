@@ -186,9 +186,9 @@ return [
             ],
             [
                 'name' => 'Products',
-                'url' => 'admin/data/products'
+                'url'  => 'admin/data/products',
             ],
-        ]
+        ],
     ],
     'Raffles'    => [
         'power' => 'manage_raffles',

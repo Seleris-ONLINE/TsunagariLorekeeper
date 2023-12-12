@@ -1,18 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class MakeItemAdditionUI extends Migration
-{
+class MakeItemAdditionUI extends Migration {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
         Schema::create('shop_products', function (Blueprint $table) {
             $table->increments('id');
@@ -22,16 +18,13 @@ class MakeItemAdditionUI extends Migration
             $table->boolean('is_bundle')->default(0);
             $table->boolean('is_limited')->default(0);
             $table->boolean('is_visible')->default(1);
-       });
+        });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::dropIfExists('shop_products');
     }
