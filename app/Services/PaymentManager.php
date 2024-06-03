@@ -4,8 +4,9 @@ namespace App\Services;
 
 use App\Models\Product\Invoice;
 use App\Models\Product\Product;
-use Config;
-use DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Log;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
@@ -238,7 +239,7 @@ class PaymentManager extends Service {
 
                 $item_data[] = [
                     'name'        => $product->product->name,
-                    'description' => $product->product->description,
+                    'description' => Str::limit($product->product->description, 180, '...'),
                     'sku'         => $product->product->id,
                     'unit_amount' => [
                         'currency_code' => Config::get('paypal.currency'),
