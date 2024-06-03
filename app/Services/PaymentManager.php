@@ -4,9 +4,9 @@ namespace App\Services;
 
 use App\Models\Product\Invoice;
 use App\Models\Product\Product;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Log;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
