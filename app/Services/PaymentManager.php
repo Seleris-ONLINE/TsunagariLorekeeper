@@ -239,7 +239,7 @@ class PaymentManager extends Service {
 
                 $item_data[] = [
                     'name'        => $product->product->name,
-                    'description' => Str::limit($product->product->description, 180, '...'),
+                    'description' => Config::get('app.name') . ' DIGITAL ITEM:' .Str::limit($product->product->name, 20, '...'),
                     'sku'         => $product->product->id,
                     'unit_amount' => [
                         'currency_code' => Config::get('paypal.currency'),
