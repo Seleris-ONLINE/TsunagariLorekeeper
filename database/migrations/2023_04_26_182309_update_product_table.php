@@ -36,14 +36,14 @@ class UpdateProductTable extends Migration {
                 DB::table('new_products')->insert([
                     'price'            => $product->price,
                     'is_limited_stock' => $product->is_limited,
-                    'total_stock'      => $product->total_stock,
-                    'remaining_stock'  => $product->remaining_stock,
+                    'total_stock'      => $product->quantity,
+                    'remaining_stock'  => $product->quantity,
                     'purchase_limit'   => $product->max,
                     'is_visible'       => $product->is_visible,
                     'product_id'       => $product->item_id,
                     'product_type'     => 'Item',
                     'sort'             => $product->sort,
-                    'discount'         => $product->discount,
+                    'discount'         => null,
                 ]);
             }
         }
