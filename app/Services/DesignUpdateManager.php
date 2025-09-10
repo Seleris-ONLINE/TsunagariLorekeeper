@@ -64,6 +64,9 @@ class DesignUpdateManager extends Service {
                 'rarity_id'     => $character->image->rarity_id,
                 'species_id'    => $character->image->species_id,
                 'subtype_id'    => $character->image->subtype_id,
+                'transformation_id' => $image->transformation_id,
+                'transformation_info' => $image->transformation_info,
+                'transformation_description' => $image->transformation_description,
             ];
 
             $request = CharacterDesignUpdate::create($data);
@@ -378,6 +381,15 @@ class DesignUpdateManager extends Service {
             } else {
                 $subtype = null;
             }
+            if (isset($data['transformation_id']) && $data['transformation_id']) {
+                $transformation = ($request->character->is_myo_slot && $request->character->image->transformation_id) ? $request->character->image->transformation : Transformation::find($data['transformation_id']);
+                $transformation_info = ($request->character->is_myo_slot && $request->character->image->transformation_info) ? $request->character->image->transformation_info : $data['transformation_info'];
+                $transformation_description = ($request->character->is_myo_slot && $request->character->image->transformation_description) ? $request->character->image->transformation_description : $data['transformation_description'];
+            } else { 
+                $transformation = null;
+                $transformation_info = null;
+                $transformation_description = null;
+            }
             if (!$rarity) {
                 throw new \Exception('Invalid rarity selected.');
             }
@@ -386,6 +398,9 @@ class DesignUpdateManager extends Service {
             }
             if ($subtype && $subtype->species_id != $species->id) {
                 throw new \Exception('Subtype does not match the species.');
+            }
+            if($transformation && $transformation->species_id != null){
+                if($transformation->species_id != $species->id) throw new \Exception(ucfirst(__('transformations.transformation'))." does not match the species.");
             }
 
             // Clear old features
@@ -417,6 +432,9 @@ class DesignUpdateManager extends Service {
             $request->species_id = $species->id;
             $request->rarity_id = $rarity->id;
             $request->subtype_id = $subtype ? $subtype->id : null;
+            $request->transformation_id = $transformation ? $transformation->id : null;
+            $request->transformation_info = $transformation_info;
+            $request->transformation_description = $transformation_description;
             $request->has_features = 1;
             $request->save();
 
@@ -575,6 +593,9 @@ class DesignUpdateManager extends Service {
                 'y1'                 => $request->y1,
                 'species_id'         => $request->species_id,
                 'subtype_id'         => ($request->character->is_myo_slot && isset($request->character->image->subtype_id)) ? $request->character->image->subtype_id : $request->subtype_id,
+                'transformation_id' => ($request->character->is_myo_slot && isset($request->character->image->transformation_id)) ? $request->character->image->transformation_id : $request->transformation_id,
+                'transformation_info' => ($request->character->is_myo_slot && isset($request->character->image->transformation_info)) ? $request->character->image->transformation_info : $request->transformation_info,
+                'transformation_description' => ($request->character->is_myo_slot && isset($request->character->image->transformation_description)) ? $request->character->image->transformation_description : $request->transformation_description,
                 'rarity_id'          => $request->rarity_id,
                 'sort'               => 0,
             ]);
