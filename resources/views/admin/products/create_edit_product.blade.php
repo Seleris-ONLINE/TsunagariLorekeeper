@@ -57,17 +57,10 @@
         </div>
     </div>
 
-    @include(
-        'widgets._product_select',
-        $product->id
-            ? [
-                'loots' => (object) [
-                    'product_id' => $product->product_id ?? null,
-                    'product_type' => $product->product_type ?? null,
-                ],
-            ]
-            : ['loots' => []]
-    )
+
+    @include('widgets._product_select', [
+        'product' => $product,
+    ])
 
     <div class="text-right">
         {!! Form::submit($product->id ? 'Edit' : 'Create', ['class' => 'btn btn-primary']) !!}
@@ -75,7 +68,6 @@
 
     {!! Form::close() !!}
 
-    @include('widgets._product_select_row')
 @endsection
 
 @section('scripts')
