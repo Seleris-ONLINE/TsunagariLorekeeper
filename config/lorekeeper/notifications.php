@@ -141,14 +141,14 @@ return [
     18  => [
         'name'    => 'Character Sent',
         'message' => '{character_name} was transferred to <a href="{recipient_url}">{recipient_name}</a> by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Character</a>)',
-        'url'     => 'character/{character_slug}',
+        'url'     => '/{character_url}',
     ],
 
     // CHARACTER_RECEIVED
     19  => [
         'name'    => 'Character Received',
         'message' => '{character_name} was transferred to you by <a href="{sender_url}">{sender_name}</a>. (<a href="{url}">View Character</a>)',
-        'url'     => 'character/{character_slug}',
+        'url'     => '/{character_url}',
     ],
 
     // SUBMISSION_APPROVED
@@ -392,7 +392,7 @@ return [
     508 => [
         'name'    => 'Gallery Submission Rejected',
         'message' => 'Your submission <strong>{submission_title}</strong> (#{submission_id}) was rejected. (<a href="{url}">View Submission</a>)',
-        'url'     => 'submissions/queue/{submission_id}',
+        'url'     => 'gallery/queue/{submission_id}',
     ],
 
     // GALLERY_SUBMISSION_VALUED

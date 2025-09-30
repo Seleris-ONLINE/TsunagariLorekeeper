@@ -14,8 +14,9 @@ use App\Models\Item\Item;
 use App\Models\Item\ItemCategory;
 use App\Models\User\User;
 use App\Models\User\UserCurrency;
-use Auth;
+use App\Models\User\UserUpdateLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Route;
 
@@ -36,6 +37,10 @@ class UserController extends Controller {
         parent::__construct();
         $name = Route::current()->parameter('name');
         $this->user = User::where('name', $name)->first();
+        // check previous usernames (only grab the latest change)
+        if (!$this->user) {
+            $this->user = UserUpdateLog::whereIn('type', ['Username Changed', 'Name/Rank Change'])->where('data', 'like', '%"old_name":"'.$name.'"%')->orderBy('id', 'DESC')->first()->user ?? null;
+        }
         if (!$this->user) {
             abort(404);
         }
@@ -66,6 +71,7 @@ class UserController extends Controller {
 
         return view('user.profile', [
             'user'       => $this->user,
+            'name'       => $name,
             'items'      => $this->user->items()->where('count', '>', 0)->orderBy('user_items.updated_at', 'DESC')->take(4)->get(),
             'characters' => $characters,
             'aliases'    => $aliases->orderBy('is_primary_alias', 'DESC')->orderBy('site')->get(),
@@ -215,12 +221,11 @@ class UserController extends Controller {
             'userOptions' => User::where('id', '!=', $this->user->id)->orderBy('name')->pluck('name', 'id')->toArray(),
             'user'        => $this->user,
             'logs'        => $this->user->getItemLogs(),
-            'sublists'    => Sublist::orderBy('sort', 'DESC')->get(),
         ]);
     }
 
     /**
-     * Shows a user's profile.
+     * Shows a user's Bank.
      *
      * @param string $name
      *
@@ -308,7 +313,7 @@ class UserController extends Controller {
     public function getUserGallery(Request $request, $name) {
         return view('user.gallery', [
             'user'        => $this->user,
-            'submissions' => $this->user->gallerySubmissions()->paginate(20)->appends($request->query()),
+            'submissions' => $this->user->gallerySubmissions()->visible(Auth::user() ?? null)->paginate(20)->appends($request->query()),
         ]);
     }
 
@@ -323,7 +328,7 @@ class UserController extends Controller {
         return view('user.favorites', [
             'user'       => $this->user,
             'characters' => false,
-            'favorites'  => GallerySubmission::whereIn('id', $this->user->galleryFavorites()->pluck('gallery_submission_id')->toArray())->visible(Auth::check() ? Auth::user() : null)->accepted()->orderBy('created_at', 'DESC')->paginate(20)->appends($request->query()),
+            'favorites'  => GallerySubmission::whereIn('id', $this->user->galleryFavorites()->pluck('gallery_submission_id')->toArray())->visible(Auth::check() ? Auth::user() : null)->orderBy('created_at', 'DESC')->paginate(20)->appends($request->query()),
         ]);
     }
 
@@ -342,7 +347,7 @@ class UserController extends Controller {
         return view('user.favorites', [
             'user'       => $this->user,
             'characters' => true,
-            'favorites'  => $this->user->characters->count() ? GallerySubmission::whereIn('id', $userFavorites)->whereIn('id', GalleryCharacter::whereIn('character_id', $userCharacters)->pluck('gallery_submission_id')->toArray())->visible(Auth::check() ? Auth::user() : null)->accepted()->orderBy('created_at', 'DESC')->paginate(20)->appends($request->query()) : null,
+            'favorites'  => $this->user->characters->count() ? GallerySubmission::whereIn('id', $userFavorites)->whereIn('id', GalleryCharacter::whereIn('character_id', $userCharacters)->pluck('gallery_submission_id')->toArray())->visible(Auth::check() ? Auth::user() : null)->orderBy('created_at', 'DESC')->paginate(20)->appends($request->query()) : null,
         ]);
     }
 }

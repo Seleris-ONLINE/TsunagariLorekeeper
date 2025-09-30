@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Characters;
 
+use App\Facades\Settings;
 use App\Http\Controllers\Controller;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterCurrency;
@@ -19,12 +20,10 @@ use App\Services\CharacterManager;
 use App\Services\CurrencyManager;
 use App\Services\DesignUpdateManager;
 use App\Services\InventoryManager;
-use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Route;
-use Settings;
 
 class CharacterController extends Controller {
     /*
@@ -53,10 +52,10 @@ class CharacterController extends Controller {
 
             $this->character->updateOwner();
 
-            if (Config::get('lorekeeper.extensions.previous_and_next_characters.display')) {
+            if (config('lorekeeper.extensions.previous_and_next_characters.display')) {
                 $query = Character::myo(0);
                 // Get only characters of this category if pull number is limited to category
-                if (Config::get('lorekeeper.settings.character_pull_number') === 'category') {
+                if (config('lorekeeper.settings.character_pull_number') === 'category') {
                     $query->where('character_category_id', $this->character->character_category_id);
                 }
 
@@ -78,7 +77,7 @@ class CharacterController extends Controller {
                     $higherChar = $characters->where('number', '>', $this->character->number)->last();
                 }
 
-                if (Config::get('lorekeeper.extensions.previous_and_next_characters.reverse') == 0) {
+                if (config('lorekeeper.extensions.previous_and_next_characters.reverse') == 0) {
                     $nextCharacter = $lowerChar;
                     $previousCharacter = $higherChar;
                 } else {
@@ -203,7 +202,7 @@ class CharacterController extends Controller {
         return view('character.gallery', [
             'character'             => $this->character,
             'extPrevAndNextBtnsUrl' => '/gallery',
-            'submissions'           => GallerySubmission::whereIn('id', $this->character->gallerySubmissions->pluck('gallery_submission_id')->toArray())->visible()->accepted()->orderBy('created_at', 'DESC')->paginate(20)->appends($request->query()),
+            'submissions'           => GallerySubmission::whereIn('id', $this->character->gallerySubmissions->pluck('gallery_submission_id')->toArray())->visible(Auth::user() ?? null)->orderBy('created_at', 'DESC')->paginate(20),
         ]);
     }
 
@@ -235,6 +234,7 @@ class CharacterController extends Controller {
 
         $items = count($categories) ?
             $this->character->items()
+                ->with('category')
                 ->where('count', '>', 0)
                 ->orderByRaw('FIELD(item_category_id,'.implode(',', $categories->pluck('id')->toArray()).')')
                 ->orderBy('name')
@@ -242,6 +242,7 @@ class CharacterController extends Controller {
                 ->get()
                 ->groupBy(['item_category_id', 'id']) :
             $this->character->items()
+                ->with('category')
                 ->where('count', '>', 0)
                 ->orderBy('name')
                 ->orderBy('updated_at')
@@ -255,11 +256,8 @@ class CharacterController extends Controller {
             'items'                 => $items,
             'logs'                  => $this->character->getItemLogs(),
         ] + (Auth::check() && (Auth::user()->hasPower('edit_inventories') || Auth::user()->id == $this->character->user_id) ? [
-            'itemOptions'   => $itemOptions->pluck('name', 'id'),
-            'userInventory' => UserItem::with('item')->whereIn('item_id', $itemOptions->pluck('id'))->whereNull('deleted_at')->where('count', '>', '0')->where('user_id', Auth::user()->id)->get()->filter(function ($userItem) {
-                return $userItem->isTransferrable == true;
-            })->sortBy('item.name'),
-            'page'          => 'character',
+            'itemOptions' => $itemOptions->pluck('name', 'id'),
+            'page'        => 'character',
         ] : []));
     }
 
@@ -580,6 +578,10 @@ class CharacterController extends Controller {
      * @return \Illuminate\Http\RedirectResponse
      */
     private function postName(Request $request, InventoryManager $service) {
+        $request->validate([
+            'stack_name' => 'nullable|max:100',
+        ]);
+
         if ($service->nameStack($this->character, CharacterItem::find($request->get('ids')), $request->get('stack_name'), Auth::user())) {
             flash('Item named successfully.')->success();
         } else {

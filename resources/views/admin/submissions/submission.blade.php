@@ -1,10 +1,10 @@
-@extends('home.layout')
+@extends('admin.layout')
 
-@section('home-title')
+@section('admin-title')
     {{ $submission->prompt_id ? 'Submission' : 'Claim' }} (#{{ $submission->id }})
 @endsection
 
-@section('home-content')
+@section('admin-content')
     @if ($submission->prompt_id)
         {!! breadcrumbs(['Admin Panel' => 'admin', 'Prompt Queue' => 'admin/submissions/pending', 'Submission (#' . $submission->id . ')' => $submission->viewUrl]) !!}
     @else
@@ -89,7 +89,7 @@
                     Some characters have been deleted since this submission was created.
                 </div>
             @endif
-            @foreach ($submission->characters()->whereRelation('character', 'deleted_at', null) as $character)
+            @foreach ($submission->characters()->whereRelation('character', 'deleted_at', null)->get() as $character)
                 @include('widgets._character_select_entry', ['characterCurrencies' => $characterCurrencies, 'items' => $items, 'tables' => $tables, 'character' => $character, 'expanded_rewards' => $expanded_rewards])
             @endforeach
         </div>
@@ -170,7 +170,6 @@
                             </div>
                         </div>
                         <div class="col-md-10">
-                            <a href="#" class="float-right fas fa-close"></a>
                             <div class="form-group">
                                 {!! Form::label('slug', 'Character Code') !!}
                                 {!! Form::select('slug[]', $characters, null, ['class' => 'form-control character-code', 'placeholder' => 'Select Character']) !!}

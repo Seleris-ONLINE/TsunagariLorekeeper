@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('admin-title')
-    Traits
+    {{ $feature->id ? 'Edit' : 'Create' }} Trait
 @endsection
 
 @section('admin-content')
@@ -34,7 +34,10 @@
 
     <div class="form-group">
         {!! Form::label('World Page Image (Optional)') !!} {!! add_help('This image is used only on the world information pages.') !!}
-        <div>{!! Form::file('image') !!}</div>
+        <div class="custom-file">
+            {!! Form::label('image', 'Choose file...', ['class' => 'custom-file-label']) !!}
+            {!! Form::file('image', ['class' => 'custom-file-input']) !!}
+        </div>
         <div class="text-muted">Recommended size: 200px x 200px</div>
         @if ($feature->has_image)
             <div class="form-check">
@@ -54,13 +57,13 @@
         <div class="col-md-4">
             <div class="form-group">
                 {!! Form::label('Species Restriction (Optional)') !!}
-                {!! Form::select('species_id', $specieses, $feature->species_id, ['class' => 'form-control']) !!}
+                {!! Form::select('species_id', $specieses, $feature->species_id, ['class' => 'form-control', 'id' => 'species']) !!}
             </div>
         </div>
         <div class="col-md-4">
-            <div class="form-group">
+            <div class="form-group" id="subtypes">
                 {!! Form::label('Subtype (Optional)') !!} {!! add_help('This is cosmetic and does not limit choice of traits in selections.') !!}
-                {!! Form::select('subtype_id', $subtypes, $feature->subtype_id, ['class' => 'form-control']) !!}
+                {!! Form::select('subtype_id', $subtypes, $feature->subtype_id, ['class' => 'form-control', 'id' => 'subtype']) !!}
             </div>
         </div>
     </div>
@@ -98,6 +101,25 @@
                 e.preventDefault();
                 loadModal("{{ url('admin/data/traits/delete') }}/{{ $feature->id }}", 'Delete Trait');
             });
+            refreshSubtype();
         });
+
+        $("#species").change(function() {
+            refreshSubtype();
+        });
+
+        function refreshSubtype() {
+            var species = $('#species').val();
+            var subtype_id = {{ $feature->subtype_id ?: 'null' }};
+            $.ajax({
+                type: "GET",
+                url: "{{ url('admin/data/traits/check-subtype') }}?species=" + species + "&subtype_id=" + subtype_id,
+                dataType: "text"
+            }).done(function(res) {
+                $("#subtypes").html(res);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                alert("AJAX call failed: " + textStatus + ", " + errorThrown);
+            });
+        };
     </script>
 @endsection

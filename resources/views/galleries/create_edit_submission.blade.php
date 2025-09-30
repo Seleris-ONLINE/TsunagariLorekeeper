@@ -23,7 +23,7 @@
         @endif
     </h1>
 
-    @if (!$submission->id && ($closed || !$gallery->canSubmit(Auth::user())))
+    @if (!$submission->id && ($closed || !$gallery->canSubmit(Settings::get('gallery_submissions_open'), Auth::user())))
         <div class="alert alert-danger">
             @if ($closed)
                 Gallery submissions are currently closed.
@@ -52,7 +52,10 @@
                 </div>
             </div>
             <div class="card p-2">
-                {!! Form::file('image', ['class' => 'form-control-file', 'id' => 'mainImage']) !!}
+                <div class="custom-file">
+                    {!! Form::label('image', 'Choose file...', ['class' => 'custom-file-label']) !!}
+                    {!! Form::file('image', ['class' => 'custom-file-input', 'id' => 'mainImage']) !!}
+                </div>
                 <small>Images may be PNG, GIF, JPG, or WebP and up to 3MB in size.</small>
             </div>
         </div>
@@ -238,7 +241,7 @@
                                 <p>Please select options as appropriate for this piece. This will help the staff processing your submission award {!! $currency->displayName !!} for it. You <strong>will not</strong> be able to edit this after creating the
                                     submission.</p>
 
-                                @foreach (Config::get('lorekeeper.group_currency_form') as $key => $field)
+                                @foreach (config('lorekeeper.group_currency_form') as $key => $field)
                                     <div class="form-group">
                                         @if ($field['type'] == 'checkbox')
                                             <input class="form-check-input ml-0 pr-4" name="{{ $key }}" type="checkbox" value="{{ isset($field['value']) ? $field['value'] : 1 }}">
