@@ -25,7 +25,7 @@ class CharacterDesignUpdate extends Model {
         'hash', 'species_id', 'subtype_id', 'rarity_id',
         'has_comments', 'has_image', 'has_addons', 'has_features',
         'submitted_at', 'update_type', 'fullsize_hash',
-        'approval_votes', 'rejection_votes', 'label',
+        'approval_votes', 'rejection_votes', 'label', 'theme',
     ];
 
     /**
@@ -346,7 +346,7 @@ class CharacterDesignUpdate extends Model {
     public function getVoteDataAttribute() {
         return collect(json_decode($this->attributes['vote_data'], true));
     }
-    
+
     /**
      * Gets the label attribute as an object.
      *

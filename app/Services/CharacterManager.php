@@ -108,6 +108,21 @@ class CharacterManager extends Service {
                 $data['subtype_id'] = null;
             }
 
+            //check theme stuff if enabled
+            if (isset($data['theme']) && $data['theme'])
+            {
+                //if enabled unique
+                if (config('lorekeeper.extensions.character_theme.is_unique')){
+                    $imageQuery = CharacterImage::images(Auth::check() ? Auth::user() : null)->with('features')->with('rarity')->with('species')->with('features');
+
+                    if($imageQuery->where('theme', $data['theme'])->exists()) throw new \Exception(ucfirst(__('character_theme.theme')).' must be unique.');
+                }
+            }
+            elseif (config('lorekeeper.extensions.character_theme.is_required') && !$isMyo){
+                throw new \Exception(ucfirst(__('character_theme.theme')).' is required.');
+            }
+            else $data['theme'] = null;
+
             // Get owner info
             $url = null;
             $recipientId = null;
@@ -559,6 +574,22 @@ class CharacterManager extends Service {
                 $data['subtype_id'] = null;
             }
 
+            //check theme stuff if enabled
+            if (isset($data['theme']) && $data['theme'])
+            {
+                //if enabled unique
+                if (config('lorekeeper.extensions.character_theme.is_unique')){
+                    $imageQuery = CharacterImage::images(Auth::check() ? Auth::user() : null)->with('features')->with('rarity')->with('species')->with('features');
+
+
+                    if ($imageQuery->where('character_id', '<>', $character->id)->where('theme', $data['theme'])->exists()) throw new \Exception(ucfirst(__('character_theme.theme')).' must be unique.');
+                }
+            }
+            elseif (config('lorekeeper.extensions.character_theme.is_required')){
+                throw new \Exception(ucfirst(__('character_theme.theme')).' is required.');
+            }
+            else $data['theme'] = null;
+
             $data['is_visible'] = 1;
 
             // Create character image
@@ -638,12 +669,27 @@ class CharacterManager extends Service {
                 throw new \Exception('Failed to log admin action.');
             }
 
+            //check theme stuff if enabled
+            if (isset($data['theme']) && $data['theme']) {
+                //if enabled unique
+                if (config('lorekeeper.extensions.character_theme.is_unique')){
+                    $imageQuery = CharacterImage::images(Auth::check() ? Auth::user() : null)->with('features')->with('rarity')->with('species')->with('features');
+
+                    if($imageQuery->where('character_id', '<>', $image->character_id)->where('theme', $data['theme'])->exists()) throw new \Exception(ucfirst(__('character_theme.theme')).' must be unique.');
+                }
+            }
+            elseif (config('lorekeeper.extensions.character_theme.is_required')){
+                throw new \Exception(ucfirst(__('character_theme.theme')).' is required.');
+            }
+            else $data['theme'] = null;
+
             // Log old features
             $old = [];
             $old['features'] = $this->generateFeatureList($image);
             $old['species'] = $image->species_id ? $image->species->displayName : null;
             $old['subtype'] = $image->subtype_id ? $image->subtype->displayName : null;
             $old['rarity'] = $image->rarity_id ? $image->rarity->displayName : null;
+            $old['theme'] = $image->theme ? $image->theme : null;
 
             // Clear old features
             $image->features()->delete();
@@ -659,6 +705,7 @@ class CharacterManager extends Service {
             $image->species_id = $data['species_id'];
             $image->subtype_id = $data['subtype_id'] ?: null;
             $image->rarity_id = $data['rarity_id'];
+            $image->theme = $data['theme'];
             $image->save();
 
             $new = [];
@@ -666,6 +713,7 @@ class CharacterManager extends Service {
             $new['species'] = $image->species_id ? $image->species->displayName : null;
             $new['subtype'] = $image->subtype_id ? $image->subtype->displayName : null;
             $new['rarity'] = $image->rarity_id ? $image->rarity->displayName : null;
+            $new['theme'] = $image->theme ? $image->theme : null;
 
             // Character also keeps track of these features
             $image->character->rarity_id = $image->rarity_id;
@@ -1927,7 +1975,7 @@ class CharacterManager extends Service {
             }
             $imageData = Arr::only($data, [
                 'species_id', 'subtype_id', 'rarity_id', 'use_cropper',
-                'x0', 'x1', 'y0', 'y1',
+                'x0', 'x1', 'y0', 'y1', 'theme',
             ]);
             $imageData['use_cropper'] = isset($data['use_cropper']);
             $imageData['description'] = $data['image_description'] ?? null;
