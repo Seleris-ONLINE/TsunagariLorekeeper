@@ -22,7 +22,7 @@ class CharacterImage extends Model {
         'extension', 'use_cropper', 'hash', 'fullsize_hash', 'fullsize_extension', 'sort',
         'x0', 'x1', 'y0', 'y1',
         'description', 'parsed_description',
-        'is_valid',
+        'is_valid', 'label',
     ];
 
     /**
@@ -265,5 +265,14 @@ class CharacterImage extends Model {
      */
     public function getThumbnailUrlAttribute() {
         return asset($this->imageDirectory.'/'.$this->thumbnailFileName);
+    }
+
+    /**
+     * Gets the label attribute as an object.
+     *
+     * @return string
+     */
+    public function getLabelAttribute() {
+        return json_decode($this->attributes['label'], true);
     }
 }

@@ -106,6 +106,10 @@ class DesignUpdateManager extends Service {
             // Update the comments section
             $request->comments = (isset($data['comments']) && $data['comments']) ? $data['comments'] : null;
             $request->has_comments = 1;
+            $request->label = isset($data['label']) ? json_encode([
+                'label' => $data['label'],
+                'label_information'=> $data['label_information']
+            ]) : null;
             $request->save();
 
             return $this->commitReturn(true);
@@ -577,6 +581,7 @@ class DesignUpdateManager extends Service {
                 'subtype_id'         => ($request->character->is_myo_slot && isset($request->character->image->subtype_id)) ? $request->character->image->subtype_id : $request->subtype_id,
                 'rarity_id'          => $request->rarity_id,
                 'sort'               => 0,
+                'label'              => json_encode($request->label),
             ]);
 
             // Shift the image credits over to the new image
