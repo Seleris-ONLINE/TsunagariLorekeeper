@@ -9,6 +9,9 @@ use App\Models\Character\Character;
 use App\Models\Character\CharacterImage;
 use App\Models\Collection\CollectionCategory;
 use App\Models\Character\Sublist;
+
+use DB;
+use Settings;
 use App\Models\Currency\Currency;
 use App\Models\Gallery\Gallery;
 use App\Models\Gallery\GalleryCharacter;
@@ -80,6 +83,8 @@ class UserController extends Controller {
             'characters' => $characters,
             'aliases'    => $aliases->orderBy('is_primary_alias', 'DESC')->orderBy('site')->get(),
             'awards'     => $this->user->awards()->orderBy('user_awards.updated_at', 'DESC')->whereNull('deleted_at')->where('count', '>', 0)->take(4)->get(),
+            'user_enabled' => Settings::get('WE_user_locations'),
+            'user_factions_enabled' => Settings::get('WE_user_factions')
         ]);
     }
 

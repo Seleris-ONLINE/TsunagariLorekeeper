@@ -6,6 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use App\Models\User\User;
 use App\Models\User\UserAlias;
+use Auth;
+use Settings;
+use File;
+use Image;
+
+use Illuminate\Support\Facades\Storage;
+use App\Models\WorldExpansion\Location;
+use App\Models\WorldExpansion\Faction;
 use App\Services\LinkService;
 use App\Services\UserService;
 use BaconQrCode\Renderer\Color\Rgb;
@@ -61,8 +69,26 @@ class AccountController extends Controller {
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function getSettings() {
-        return view('account.settings');
+    public function getSettings()
+    {
+        $interval = array(
+            0 => 'whenever',
+            1 => 'yearly',
+            2 => 'quarterly',
+            3 => 'monthly',
+            4 => 'weekly',
+            5 => 'daily'
+        );
+
+        return view('account.settings',[
+            'locations' => Location::all()->where('is_user_home')->pluck('style','id')->toArray(),
+            'factions' => Faction::all()->where('is_user_faction')->pluck('style','id')->toArray(),
+            'user_enabled' => Settings::get('WE_user_locations'),
+            'user_faction_enabled' => Settings::get('WE_user_factions'),
+            'char_enabled' => Settings::get('WE_character_locations'),
+            'char_faction_enabled' => Settings::get('WE_character_factions'),
+            'location_interval' => $interval[Settings::get('WE_change_timelimit')]
+        ]);
     }
 
     /**
@@ -93,7 +119,6 @@ class AccountController extends Controller {
                 flash($error)->error();
             }
         }
-
         return redirect()->back();
     }
 
@@ -181,6 +206,40 @@ class AccountController extends Controller {
             }
         }
 
+        return redirect()->back();
+    }
+
+    /**
+     * Edits the user's location from a list of locations that users can make their home.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postLocation(Request $request, UserService $service)
+    {
+        if($service->updateLocation($request->input('location'), Auth::user())) {
+            flash('Location updated successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
+        return redirect()->back();
+    }
+
+    /**
+     * Edits the user's faction from a list of factions that users can make their home.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postFaction(Request $request, UserService $service)
+    {
+        if($service->updateFaction($request->input('faction'), Auth::user())) {
+            flash('Faction updated successfully.')->success();
+        }
+        else {
+            foreach($service->errors()->getMessages()['error'] as $error) flash($error)->error();
+        }
         return redirect()->back();
     }
 
