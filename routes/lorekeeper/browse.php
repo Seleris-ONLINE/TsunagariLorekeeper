@@ -91,6 +91,7 @@ Route::group(['prefix' => 'character', 'namespace' => 'Characters'], function ()
     Route::get('{slug}/submissions', 'CharacterController@getCharacterSubmissions');
 
     Route::get('{slug}/gallery', 'CharacterController@getCharacterGallery');
+    Route::get('{slug}/image/{id}', 'CharacterController@getCharacterImage');
 });
 Route::group(['prefix' => 'myo', 'namespace' => 'Characters'], function () {
     Route::get('{id}', 'MyoController@getCharacter');
@@ -125,6 +126,7 @@ Route::group(['prefix' => 'world'], function () {
     Route::get('collections', 'WorldController@getCollections');
     Route::get('collections/{id}', 'WorldController@getCollection');
     Route::get('collection-categories', 'WorldController@getCollectionCategories');
+    Route::get(__('transformations.transformations'), 'WorldController@getTransformations');
 });
 
 Route::group(['prefix' => 'prompts'], function () {
