@@ -64,6 +64,7 @@ class DesignUpdateManager extends Service {
                 'rarity_id'     => $character->image->rarity_id,
                 'species_id'    => $character->image->species_id,
                 'subtype_id'    => $character->image->subtype_id,
+                'theme'         => $character->image->theme,
             ];
 
             $request = CharacterDesignUpdate::create($data);
@@ -106,6 +107,10 @@ class DesignUpdateManager extends Service {
             // Update the comments section
             $request->comments = (isset($data['comments']) && $data['comments']) ? $data['comments'] : null;
             $request->has_comments = 1;
+            $request->label = isset($data['label']) ? json_encode([
+                'label' => $data['label'],
+                'label_information'=> $data['label_information']
+            ]) : null;
             $request->save();
 
             return $this->commitReturn(true);
@@ -388,6 +393,21 @@ class DesignUpdateManager extends Service {
                 throw new \Exception('Subtype does not match the species.');
             }
 
+            //check theme stuff if enabled
+            if(isset($data['theme']) && $data['theme'])
+            {
+                //if enabled unique
+                if(config('lorekeeper.extensions.character_theme.is_unique')){
+                    $imageQuery = CharacterImage::images(Auth::check() ? Auth::user() : null)->with('features')->with('rarity')->with('species')->with('features');
+
+                    if($imageQuery->where('theme', $data['theme'])->exists()) throw new \Exception(ucfirst(__('character_theme.theme')).' must be unique.');
+                }
+            }
+            elseif(config('lorekeeper.extensions.character_theme.is_required')){
+                throw new \Exception(ucfirst(__('character_theme.theme')).' is required.');
+            }
+            else $data['theme'] = null;
+
             // Clear old features
             $request->features()->delete();
 
@@ -418,6 +438,7 @@ class DesignUpdateManager extends Service {
             $request->rarity_id = $rarity->id;
             $request->subtype_id = $subtype ? $subtype->id : null;
             $request->has_features = 1;
+            $request->theme = isset($data['theme']) ? $data['theme'] : null;
             $request->save();
 
             return $this->commitReturn(true);
@@ -577,6 +598,8 @@ class DesignUpdateManager extends Service {
                 'subtype_id'         => ($request->character->is_myo_slot && isset($request->character->image->subtype_id)) ? $request->character->image->subtype_id : $request->subtype_id,
                 'rarity_id'          => $request->rarity_id,
                 'sort'               => 0,
+                'label'              => json_encode($request->label),
+                'theme'              => $request->theme,
             ]);
 
             // Shift the image credits over to the new image

@@ -36,7 +36,7 @@ return [
     | site wherever the name needs to be displayed.
     |
     */
-    'site_name'                                         => 'Lorekeeper',
+    'site_name'                                         => 'Tsunagari Shrine',
 
     /*
     |--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ return [
     | will still work provided users link the relevant alias(es).
     |
     */
-    'require_alias'                                     => 1,
+    'require_alias'                                     => 0,
 
     /*
     |--------------------------------------------------------------------------

@@ -129,6 +129,11 @@
     </div>
 
     <div class="form-group">
+        {!! Form::label(ucfirst(__('character_theme.theme')).' ' . (config('lorekeeper.extensions.character_theme.is_required') ? '(Required)' : '(Optional)')) !!}
+        {!! Form::text('theme', old('theme'), ['class' => 'form-control']) !!}
+    </div>
+
+    <div class="form-group">
         {!! Form::label('Traits') !!}
         <div><a href="#" class="btn btn-primary mb-2" id="add-feature">Add Trait</a></div>
         <div id="featureList">
@@ -148,6 +153,8 @@
             <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
         </div>
     </div>
+
+    @include('widgets._character_label', ['isStaff' => true, 'image' => $character->image])
 
     <div class="text-right">
         {!! Form::submit('Create Image', ['class' => 'btn btn-primary']) !!}

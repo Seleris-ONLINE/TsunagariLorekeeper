@@ -245,6 +245,11 @@
         </div>
 
         <div class="form-group">
+            {!! Form::label(ucfirst(__('character_theme.theme')).' ' . (config('lorekeeper.extensions.character_theme.is_required') ? '(Required)' : '(Optional)')) !!}
+            {!! Form::text('theme', old('theme'), ['class' => 'form-control']) !!}
+        </div>
+
+        <div class="form-group">
             {!! Form::label('Traits') !!} @if ($isMyo)
                 {!! add_help(
                     'These traits will be listed as required traits for the slot. The user will still be able to add on more traits, but not be able to remove these. This is allowed to conflict with the rarity above; you may add traits above the character\'s specified rarity.',
@@ -259,6 +264,10 @@
                 <a href="#" class="remove-feature btn btn-danger mb-2">×</a>
             </div>
         </div>
+
+        @if (!$isMyo)
+            @include('widgets._character_label', ['isStaff' => true])
+        @endif
 
         <div class="text-right">
             {!! Form::submit('Create Character', ['class' => 'btn btn-primary']) !!}

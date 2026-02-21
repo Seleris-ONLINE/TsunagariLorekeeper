@@ -33,6 +33,12 @@
                     This version of this character is outdated, and only noted here for recordkeeping purposes. Do not use as an official reference.
                 </div>
             @endif
+            @if ($image->label)
+                <div class="alert alert-info">
+                    {{ config('lorekeeper.character_labels')[$image->label['label']] }}
+                    {!! $image->label['label_information'] ? '<br /> Description: ' . $image->label['label_information'] : null !!}
+                </div>
+            @endif
 
             {{-- Basic info --}}
             <div class="tab-pane fade show active" id="info-{{ $image->id }}">
@@ -56,6 +62,12 @@
                     </div>
                     <div class="col-lg-8 col-7 pl-1">{!! $image->rarity_id ? $image->rarity->displayName : 'None' !!}</div>
                 </div>
+                @if($image->theme)
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-4"><h5>{{ucfirst(__('character_theme.theme'))}}</h5></div>
+                        <div class="col-lg-8 col-md-6 col-8">{!! $image->theme !!}</div>
+                    </div>
+                @endif
 
                 <div class="mb-3">
                     <div>
@@ -211,6 +223,7 @@
                         {!! Form::checkbox('is_valid', 1, $image->is_valid, ['class' => 'form-check-input', 'data-toggle' => 'toggle']) !!}
                         {!! Form::label('is_valid', 'Is Valid', ['class' => 'form-check-label ml-3']) !!} {!! add_help('If this is turned off, the image will still be visible, but displayed with a note that the image is not a valid reference.') !!}
                     </div>
+                    @include('widgets._character_label', ['isStaff' => true])
                     <div class="text-right">
                         {!! Form::submit('Edit', ['class' => 'btn btn-primary']) !!}
                     </div>
