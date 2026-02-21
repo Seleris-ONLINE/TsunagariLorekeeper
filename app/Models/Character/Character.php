@@ -2,28 +2,14 @@
 
 namespace App\Models\Character;
 
-<<<<<<< HEAD
 use App\Facades\Notifications;
 use App\Models\Award\Award;
 use App\Models\Award\AwardLog;
-=======
 use Config;
 use DB;
 use Settings;
-use Carbon\Carbon;
-use Notifications;
-use App\Models\Model;
-
-use App\Models\User\User;
-use App\Models\User\UserCharacterLog;
 
 use App\Models\Character\Character;
-use App\Models\Character\CharacterCategory;
-use App\Models\Character\CharacterTransfer;
-use App\Models\Character\CharacterBookmark;
-
-use App\Models\Character\CharacterCurrency;
->>>>>>> 90ee47a924d14d74c05b147b9a5946aba3fc433b
 use App\Models\Currency\Currency;
 use App\Models\Currency\CurrencyLog;
 use App\Models\Gallery\GalleryCharacter;
@@ -410,7 +396,6 @@ class Character extends Model
         return 'Character';
     }
 
-<<<<<<< HEAD
     /**
      * Gets if the character has a label or not and a tooltip describing the label.
      * 
@@ -424,7 +409,8 @@ class Character extends Model
 
         return '<i class="fas fa-star text-info mr-1" data-toggle="tooltip" title="'. config('lorekeeper.character_labels')[$label['label']] . 
             ($label['label_information'] ? '<br /> Description: ' . $label['label_information'].'"></i>' : '"></i>');
-=======
+    }
+            
     public function getHomeSettingAttribute()
     {
         return intval(Settings::get('WE_character_locations'));
@@ -494,7 +480,6 @@ class Character extends Model
             if(!$standing) return $this->faction->ranks()->where('is_open', 1)->where('breakpoint', 0)->first();
             return $this->faction->ranks()->where('is_open', 1)->where('breakpoint', '<=', $standing->quantity)->orderBy('breakpoint', 'DESC')->first();
         }
->>>>>>> 90ee47a924d14d74c05b147b9a5946aba3fc433b
     }
 
     /**********************************************************************************************
