@@ -250,3 +250,9 @@ Route::group(['prefix' => __('awards.awardcase'), 'namespace' => 'Users'], funct
 
     Route::get('selector', 'AwardCaseController@getSelector');
 });
+
+Route::group(['prefix' => 'collection', 'namespace' => 'Users'], function() {
+    Route::get('/', 'CollectionController@getIndex');
+    Route::get('complete/{id}', 'CollectionController@getCompleteCollection');
+    Route::post('complete/{id}', 'CollectionController@postCompleteCollection');
+});

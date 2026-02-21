@@ -50,6 +50,9 @@
                             <a class="dropdown-item" href="{{ url('comments/liked') }}">
                                 Liked Comments
                             </a>
+                            <a class="dropdown-item" href="{{ url('collection') }}">
+                                Collections
+                            </a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">

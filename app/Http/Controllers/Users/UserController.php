@@ -7,6 +7,7 @@ use App\Models\Award\Award;
 use App\Models\Award\AwardCategory;
 use App\Models\Character\Character;
 use App\Models\Character\CharacterImage;
+use App\Models\Collection\CollectionCategory;
 use App\Models\Character\Sublist;
 use App\Models\Currency\Currency;
 use App\Models\Gallery\Gallery;
@@ -75,6 +76,7 @@ class UserController extends Controller {
             'user'       => $this->user,
             'name'       => $name,
             'items'      => $this->user->items()->where('count', '>', 0)->orderBy('user_items.updated_at', 'DESC')->take(4)->get(),
+            'collections' => $this->user->collections()->orderBy('user_collections.updated_at', 'DESC')->take(4)->get(),
             'characters' => $characters,
             'aliases'    => $aliases->orderBy('is_primary_alias', 'DESC')->orderBy('site')->get(),
             'awards'     => $this->user->awards()->orderBy('user_awards.updated_at', 'DESC')->whereNull('deleted_at')->where('count', '>', 0)->take(4)->get(),
@@ -404,4 +406,36 @@ class UserController extends Controller {
             'favorites'  => $this->user->characters->count() ? GallerySubmission::whereIn('id', $userFavorites)->whereIn('id', GalleryCharacter::whereIn('character_id', $userCharacters)->pluck('gallery_submission_id')->toArray())->visible(Auth::check() ? Auth::user() : null)->orderBy('created_at', 'DESC')->paginate(20)->appends($request->query()) : null,
         ]);
     }
+
+    /**
+     * Shows a user's collection logs.
+     *
+     * @param  string  $name
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function getUserCollectionLogs($name)
+    {
+        $user = $this->user;
+        $categories = CollectionCategory::orderBy('sort', 'DESC')->get();
+        $collections = count($categories) ?
+        $user->collections()
+            ->orderByRaw('FIELD(collection_category_id,'.implode(',', $categories->pluck('id')->toArray()).')')
+            ->orderBy('name')
+            ->orderBy('updated_at')
+            ->get()
+            ->groupBy(['collection_category_id', 'id']) :
+        $user->collections()
+            ->orderBy('name')
+            ->orderBy('updated_at')
+            ->get()
+            ->groupBy(['collection_category_id', 'id']);
+        return view('user.collection_logs', [
+            'user' => $this->user,
+            'logs' => $this->user->getCollectionLogs(0),
+            'categories' => $categories->keyBy('id'),
+            'collections' => $collections,
+            'sublists' => Sublist::orderBy('sort', 'DESC')->get()
+        ]);
+    }
+
 }

@@ -210,6 +210,10 @@ return [
                 'name' => 'Items',
                 'url'  => 'admin/data/items',
             ],
+            [
+                'name' => 'Collections',
+                'url' => 'admin/data/collections'
+            ],
         ],
     ],
     'Raffles'    => [
