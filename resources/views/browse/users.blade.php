@@ -98,5 +98,4 @@
     <div class="text-center mt-4 small text-muted">{{ $users->total() }} result{{ $users->total() == 1 ? '' : 's' }} found.</div>
 
     @include('widgets._online_count')
-
 @endsection

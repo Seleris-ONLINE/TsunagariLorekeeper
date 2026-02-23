@@ -67,16 +67,20 @@
                     <div class="col-md-8 col-8">{!! $user->birthdayDisplay !!}</div>
                 </div>
             @endif
-            @if($user_enabled && isset($user->home_id))
+            @if ($user_enabled && isset($user->home_id))
                 <div class="row col-md-6">
-                    <div class="col-md-4 col-4"><h5>Home</h5></div>
+                    <div class="col-md-4 col-4">
+                        <h5>Home</h5>
+                    </div>
                     <div class="col-md-8 col-8">{!! $user->home ? $user->home->fullDisplayName : '-Deleted Location-' !!}</div>
                 </div>
             @endif
-            @if($user_factions_enabled && isset($user->faction_id))
+            @if ($user_factions_enabled && isset($user->faction_id))
                 <div class="row col-md-6">
-                    <div class="col-md-4 col-4"><h5>Faction</h5></div>
-                    <div class="col-md-8 col-8">{!! $user->faction ? $user->faction->fullDisplayName : '-Deleted Faction-' !!}{!! $user->factionRank ? ' ('.$user->factionRank->name.')' : null !!}</div>
+                    <div class="col-md-4 col-4">
+                        <h5>Faction</h5>
+                    </div>
+                    <div class="col-md-8 col-8">{!! $user->faction ? $user->faction->fullDisplayName : '-Deleted Faction-' !!}{!! $user->factionRank ? ' (' . $user->factionRank->name . ')' : null !!}</div>
                 </div>
             @endif
         </div>
@@ -154,15 +158,15 @@
 
 <div class="card-deck mb-4 profile-assets" style="clear:both;">
     <div class="card profile-inventory profile-assets-card">
-    <div class="card-body text-center">
+        <div class="card-body text-center">
             <h5 class="card-title">Completed Collections</h5>
             <div class="profile-assets-content">
-                @if(count($collections))
+                @if (count($collections))
                     <div class="row">
-                        @foreach($collections as $collection)
+                        @foreach ($collections as $collection)
                             <div class="col-md-3 col-6 profile-inventory-item">
-                                @if($collection->imageUrl)
-                                    <img src="{{ $collection->imageUrl }}" data-toggle="tooltip" title="{{ $collection->name }}" alt="{{ $collection->name }}"/>
+                                @if ($collection->imageUrl)
+                                    <img src="{{ $collection->imageUrl }}" data-toggle="tooltip" title="{{ $collection->name }}" alt="{{ $collection->name }}" />
                                 @else
                                     <p>{{ $collection->name }}</p>
                                 @endif
@@ -173,7 +177,7 @@
                     <div>No collections completed.</div>
                 @endif
             </div>
-            <div class="text-right"><a href="{{ $user->url.'/collection-logs' }}">View all...</a></div>
+            <div class="text-right"><a href="{{ $user->url . '/collection-logs' }}">View all...</a></div>
         </div>
     </div>
 </div>
