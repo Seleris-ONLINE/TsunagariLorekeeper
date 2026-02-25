@@ -31,7 +31,8 @@ class Kernel extends ConsoleKernel {
             ->daily();
         $schedule->command('update-timed-daily')
                 ->everyMinute();          
-
+        $schedule->command('change-feature')
+                ->monthly();
     }
 
     /**
