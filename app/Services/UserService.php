@@ -4,9 +4,7 @@ namespace App\Services;
 
 use App\Facades\Notifications;
 use App\Facades\Settings;
-use DB;
 use Auth;
-use Image;
 use App\Models\WorldExpansion\Location;
 use App\Models\WorldExpansion\Faction;
 use App\Models\WorldExpansion\FactionRankMember;
