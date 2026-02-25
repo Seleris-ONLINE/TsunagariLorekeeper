@@ -176,7 +176,7 @@ class UserController extends Controller {
     }
 
 
-    ublic function postUserAlias(Request $request, $name, $id) {
+    public function postUserAlias(Request $request, $name, $id) {
         $user = User::where('name', $name)->first();
         $alias = UserAlias::find($id);
 

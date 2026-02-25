@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use App\Models\User\User;
 use App\Models\User\UserAlias;
-use Auth;
 use Settings;
 use File;
 use Image;
