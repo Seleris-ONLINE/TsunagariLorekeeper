@@ -210,6 +210,14 @@ class User extends Authenticatable implements MustVerifyEmail {
     }
 
     /**
+     * Returns user's foraging stats
+     */
+    public function foraging()
+    {
+        return $this->hasOne('App\Models\User\UserForaging');
+    }
+    
+    /**
      * Get all of the user's gallery submissions.
      */
     public function gallerySubmissions() {
