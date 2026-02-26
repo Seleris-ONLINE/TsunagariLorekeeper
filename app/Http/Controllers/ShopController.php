@@ -129,8 +129,9 @@ class ShopController extends Controller {
      */
     public function getPurchaseHistory() {
         return view('shops.purchase_history', [
-            'logs'  => Auth::user()->getShopLogs(0),
-            'shops' => Shop::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
+            'logs'     => Auth::user()->getShopLogs(0),
+            'shops'    => Shop::where('is_active', 1)->orderBy('sort', 'DESC')->get(),
+            'invoices' => Auth::user()->getInvoices(),
         ]);
     }
 }

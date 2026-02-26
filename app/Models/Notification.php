@@ -142,6 +142,7 @@ class Notification extends Model {
     public const CLAIM_CANCELLED = 109;
     public const REPORT_ASSIGNED = 220;
     public const REPORT_CLOSED = 221;
+    public const PURCHASE = 222;
     public const COMMENT_MADE = 239;
     public const COMMENT_REPLY = 240;
     public const CHARACTER_ITEM_GRANT = 501;

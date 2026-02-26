@@ -231,6 +231,10 @@ return [
                 'name' => 'Transformations',
                 'url'  => 'admin/data/transformations',
             ],
+            [
+                'name' => 'Products',
+                'url'  => 'admin/data/products',
+            ],
         ],
     ],
     'World_Expanded' => [

@@ -37,6 +37,8 @@ class Kernel extends ConsoleKernel {
             ->daily();
         $schedule->command('index-new-search-pages')
             ->daily();
+        $schedule->command('check-invoices')
+            ->hourly();
     }
 
     /**

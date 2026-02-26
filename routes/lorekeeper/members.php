@@ -224,6 +224,19 @@ Route::group(['prefix' => 'designs', 'namespace' => 'Characters'], function () {
 Route::group(['prefix' => 'shops'], function () {
     Route::post('buy', 'ShopController@postBuy');
     Route::get('history', 'ShopController@getPurchaseHistory');
+
+    // PRODUCT SPECIFIC
+    Route::get('invoice/{id}', 'PaymentController@getInvoice'); // modal
+    Route::get('products', 'PaymentController@getStoreFront');
+    Route::get('products/cart/{ids?}', 'PaymentController@getCart'); // modal
+    Route::post('products/purchase/{ids?}', 'PaymentController@postCheckout');
+
+    // PAYPAL SPECIFIC
+    Route::get('products/paypal/confirm', 'PaymentController@getPaypalConfirm');
+    Route::post('products/paypal/confirm/{id}', 'PaymentController@postPaypalConfirm');
+    Route::get('products/paypal/success', 'PaymentController@getPaypalSuccess');
+    Route::get('products/paypal/cancel', 'PaymentController@getPaypalCancel');
+    Route::post('products/paypal/cancel/{id}', 'PaymentController@postPaypalCancel');
 });
 
 
