@@ -125,6 +125,10 @@ return [
                 'name' => 'Forages',
                 'url' => 'admin/data/forages'
             ],
+            [
+                'name' => 'Recipe Grants',
+                'url' => 'admin/grants/recipes'
+            ],
         ]
     ],
     'Masterlist' => [
@@ -263,6 +267,10 @@ return [
             [
                 'name' => 'Concepts',
                 'url' => 'admin/world/concepts'
+            ],
+            [
+                'name' => 'Recipes',
+                'url' => 'admin/data/recipes'
             ],
         ]
     ],

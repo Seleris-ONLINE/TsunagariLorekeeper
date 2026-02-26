@@ -27,6 +27,7 @@
         <div class="sidebar-item"><a href="{{ $user->url . '/currency-logs' }}" class="{{ set_active('user/' . $user->name . '/currency-logs*') }}">Currency Logs</a></div>
         <div class="sidebar-item"><a href="{{ $user->url . '/' . __('awards.award') . '-logs' }}" class="{{ set_active($user->url . '/award-logs*') }}">{{ ucfirst(ucfirst(__('awards.award'))) }} Logs</a></div>
         <div class="sidebar-item"><a href="{{ $user->url . '/submissions' }}" class="{{ set_active('user/' . $user->name . '/submissions*') }}">Submissions</a></div>
+        <div class="sidebar-item"><a href="{{ $user->url.'/recipe-logs' }}" class="{{ set_active($user->url.'/recipe-logs*') }}">Recipe Logs</a></div>
         <div class="sidebar-item"><a href="{{ $user->url.'/collection-logs' }}" class="{{ set_active($user->url.'/collection-logs*') }}">Collection Logs</a></div>
     </li>
 

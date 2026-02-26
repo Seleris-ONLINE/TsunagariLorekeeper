@@ -18,6 +18,7 @@ use App\Models\User\UserItem;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use App\Models\Recipe\Recipe;
 
 class SubmissionManager extends Service {
     /*
@@ -637,6 +638,11 @@ class SubmissionManager extends Service {
                             break;
                         case 'Award':
                             $reward = Award::find($data['rewardable_id'][$key]);
+                            break;
+                        case 'Recipe':
+                            if (!$isStaff) break;
+                            $reward = Recipe::find($data['rewardable_id'][$key]);
+                            if(!$reward->needs_unlocking) throw new \Exception("Invalid recipe selected.");
                             break;
                     }
                     if (!$reward) {

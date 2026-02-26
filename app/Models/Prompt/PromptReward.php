@@ -72,8 +72,11 @@ class PromptReward extends Model {
                 break;
             case 'Award':
                 return $this->belongsTo(Award::class, 'rewardable_id');
-        }
-
+                break;
+            case 'Recipe':
+                return $this->belongsTo('App\Models\Recipe\Recipe', 'rewardable_id');
+                break;
+        }   
         return null;
     }
 }

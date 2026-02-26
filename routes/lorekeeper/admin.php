@@ -181,6 +181,15 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('awards/edit/{id?}', 'AwardController@postCreateEditAward');
     Route::post('awards/delete/{id}', 'AwardController@postDeleteAward');
 
+    // RECIPES
+    Route::get('recipes', 'RecipeController@getRecipeIndex');
+    Route::get('recipes/create', 'RecipeController@getCreateRecipe');
+    Route::get('recipes/edit/{id}', 'RecipeController@getEditRecipe');
+    Route::get('recipes/delete/{id}', 'RecipeController@getDeleteRecipe');
+    Route::post('recipes/create', 'RecipeController@postCreateEditRecipe');
+    Route::post('recipes/edit/{id?}', 'RecipeController@postCreateEditRecipe');
+    Route::post('recipes/delete/{id}', 'RecipeController@postDeleteRecipe');
+    
     // SHOPS
     Route::get('shops', 'ShopController@getIndex');
     Route::get('shops/create', 'ShopController@getCreateShop');
@@ -357,11 +366,14 @@ Route::group(['prefix' => 'grants', 'namespace' => 'Users', 'middleware' => 'pow
 
     Route::get('items', 'GrantController@getItems');
     Route::post('items', 'GrantController@postItems');
-
+    
     Route::get('item-search', 'GrantController@getItemSearch');
 
     Route::get('awards', 'GrantController@getAwards');
     Route::post('awards', 'GrantController@postAwards');
+    
+    Route::get('recipes', 'GrantController@getRecipes');
+    Route::post('recipes', 'GrantController@postRecipes');
 });
 
 // MASTERLIST
