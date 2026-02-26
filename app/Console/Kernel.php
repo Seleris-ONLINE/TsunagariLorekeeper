@@ -35,6 +35,8 @@ class Kernel extends ConsoleKernel {
                 ->monthly();
         $schedule->command('reset-foraging')
             ->daily();
+        $schedule->command('index-new-search-pages')
+            ->daily();
     }
 
     /**
