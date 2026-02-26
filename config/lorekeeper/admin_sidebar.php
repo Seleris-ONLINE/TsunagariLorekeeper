@@ -272,6 +272,10 @@ return [
                 'name' => 'Recipes',
                 'url' => 'admin/data/recipes'
             ],
+            [
+                'name' => 'Advent Calendars',
+                'url' => 'admin/data/advent-calendars'
+            ],
         ]
     ],
     'Raffles' => [

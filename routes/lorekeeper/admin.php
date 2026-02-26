@@ -316,6 +316,14 @@ Route::group(['prefix' => 'data', 'namespace' => 'Data', 'middleware' => 'power:
     Route::post('transformations/edit/{id?}', 'TransformationController@postCreateEditTransformation');
     Route::post('transformations/delete/{id}', 'TransformationController@postDeleteTransformation');
     Route::post('transformations/sort', 'TransformationController@postSortTransformations');
+
+    Route::get('advent-calendars', 'AdventController@getAdventIndex');
+    Route::get('advent-calendars/create', 'AdventController@getCreateAdvent');
+    Route::get('advent-calendars/edit/{id}', 'AdventController@getEditAdvent');
+    Route::get('advent-calendars/delete/{id}', 'AdventController@getDeleteAdvent');
+    Route::post('advent-calendars/create', 'AdventController@postCreateEditAdvent');
+    Route::post('advent-calendars/edit/{id?}', 'AdventController@postCreateEditAdvent');
+    Route::post('advent-calendars/delete/{id}', 'AdventController@postDeleteAdvent');
 });
 
 // PAGES

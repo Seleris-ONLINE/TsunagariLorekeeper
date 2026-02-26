@@ -278,3 +278,12 @@ Route::group(['prefix' => 'foraging', 'namespace' => 'Users'], function() {
     Route::post('/claim', 'ForagingController@postClaim');
     Route::post('edit/character', 'ForagingController@postEditCharacter');
 });
+
+/**************************************************************************************************
+    Advent Calendars
+**************************************************************************************************/
+
+Route::group(['prefix' => 'advent-calendars'], function() {
+    Route::get('{id}', 'AdventController@getAdvent');
+    Route::post('{id}', 'AdventController@postClaimPrize');
+});
