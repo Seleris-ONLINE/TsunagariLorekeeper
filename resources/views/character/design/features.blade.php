@@ -70,7 +70,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label(ucfirst(__('character_theme.theme')).' ' . (config('lorekeeper.extensions.character_theme.is_required') ? '(Required)' : '(Optional)')) !!}
+            {!! Form::label(ucfirst(__('character_theme.theme')) . ' ' . (config('lorekeeper.extensions.character_theme.is_required') ? '(Required)' : '(Optional)')) !!}
             {!! Form::text('theme', $request->theme, ['class' => 'form-control']) !!}
         </div>
 
@@ -175,7 +175,7 @@
             @if ($request->theme)
                 <div class="row">
                     <div class="col-md-2 col-4">
-                        <h5>{{ucfirst(__('character_theme.theme'))}}</h5>
+                        <h5>{{ ucfirst(__('character_theme.theme')) }}</h5>
                     </div>
                     <div class="col-md-10 col-8">{!! $request->theme !!}</div>
                 </div>
